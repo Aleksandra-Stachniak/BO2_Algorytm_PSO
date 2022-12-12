@@ -8,7 +8,7 @@ def function(sollution:np.array, profits:np.array):
     
     sollution_T = sollution.transpose()
     fun = profits.dot(sollution_T)
-    return fun
+    return np.array(fun)
 
 def production_volume(number_products:int, product_weights:np.array, time_1:np.array, time_2:np.array, time_3:np.array,
                       profits:np.array, total_time_1:int, total_time_2:int, total_time_3:int, total_weight:int):
