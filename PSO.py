@@ -7,7 +7,7 @@ import numpy as np
 def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
     '''
     :param Nmax: maksymalna liczba iteracji
-    :param num: liczba produktów
+    :param num: liczba cząstek
     :param weights: lista wag produktów
     :param time: krotka list odpowiadających czasom dla poszczególnych etapów
     :param profits: lista zysków
@@ -25,6 +25,8 @@ def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
     p = []  # najlepsze rozwiazania cząsteczek
     x = []  # rój pozycja
     v = []  # predkosc
+    
+    costPoints = []
 
     for i in range(num):
         p.append(global_solution)
@@ -49,11 +51,15 @@ def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
 
             if utils.function(x[i], profits) > utils.function(p[i], profits):
                 p[i] = x[i] # aktualizacja najlepszego rozwiązania cząsteczki
+                
                 if utils.function(p[i], profits) > utils.function(global_solution, profits):
                     global_solution = p[i]  # aktualizacja najlepszego rozwiązania roju
-            iter += 1
+                    
+        costPoints.append(utils.function(global_solution, profits))
+        iter += 1
 
     print(f"ROZWIĄZANIE KOŃCOWE: \n{global_solution}")
+    print(f'FUNKCJA CELU = {utils.function(global_solution, profits)}')
 
     return global_solution
 
