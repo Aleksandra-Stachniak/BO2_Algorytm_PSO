@@ -4,9 +4,10 @@ import utils
 import random
 import numpy as np
 
-def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
+def particle_swarm(Nmax, num_p, num, weights, time, profits, total_time, total_weight):
     '''
     :param Nmax: maksymalna liczba iteracji
+    :param num_p: liczba produktów
     :param num: liczba cząstek
     :param weights: lista wag produktów
     :param time: krotka list odpowiadających czasom dla poszczególnych etapów
@@ -16,7 +17,7 @@ def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
     '''
 
     # najlepsze rozwiązanie globalne
-    global_solution = utils.production_volume(num, weights, time[0], time[1], time[2],
+    global_solution = utils.production_volume(num_p, weights, time[0], time[1], time[2],
                     profits, total_time[0], total_time[1], total_time[2], total_weight)
 
     start_solution = global_solution
