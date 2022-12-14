@@ -4,10 +4,10 @@ import utils
 import random
 import numpy as np
 
-def particle_swarm(Nmax, num_p, num, weights, time, profits, total_time, total_weight):
+
+def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
     '''
     :param Nmax: maksymalna liczba iteracji
-    :param num_p: liczba produktów
     :param num: liczba cząstek
     :param weights: lista wag produktów
     :param time: krotka list odpowiadających czasom dla poszczególnych etapów
@@ -17,8 +17,8 @@ def particle_swarm(Nmax, num_p, num, weights, time, profits, total_time, total_w
     '''
 
     # najlepsze rozwiązanie globalne
-    global_solution = utils.production_volume(num_p, weights, time[0], time[1], time[2],
-                    profits, total_time[0], total_time[1], total_time[2], total_weight)
+    global_solution = utils.production_volume(num, weights, time[0], time[1], time[2],
+                                              profits, total_time[0], total_time[1], total_time[2], total_weight)
 
     start_solution = global_solution
     print(f"ROZWIĄZANIE POCZĄTKOWE: \n{start_solution}")
@@ -26,7 +26,7 @@ def particle_swarm(Nmax, num_p, num, weights, time, profits, total_time, total_w
     p = []  # najlepsze rozwiazania cząsteczek
     x = []  # rój pozycja
     v = []  # predkosc
-    
+
     costPoints = []
 
     for i in range(num):
@@ -50,12 +50,19 @@ def particle_swarm(Nmax, num_p, num, weights, time, profits, total_time, total_w
             # aktualizacja pozycji cząsteczek
             x[i] = x[i - 1] + v[i]
 
-            if utils.function(x[i], profits) > utils.function(p[i], profits):
-                p[i] = x[i] # aktualizacja najlepszego rozwiązania cząsteczki
-                
-                if utils.function(p[i], profits) > utils.function(global_solution, profits):
+            if utils.function(x[i], profits, weights, time[0], time[1], time[2], total_time[0], total_time[1],
+                              total_time[2], total_weight) > utils.function(p[i], profits, weights, time[0], time[1],
+                                                                            time[2], total_time[0], total_time[1],
+                                                                            total_time[2], total_weight):
+                p[i] = x[i]  # aktualizacja najlepszego rozwiązania cząsteczki
+
+                if utils.function(p[i], profits, weights, time[0], time[1], time[2], total_time[0], total_time[1],
+                                  total_time[2], total_weight) > utils.function(global_solution, profits, weights,
+                                                                                time[0], time[1], time[2],
+                                                                                total_time[0], total_time[1],
+                                                                                total_time[2], total_weight):
                     global_solution = p[i]  # aktualizacja najlepszego rozwiązania roju
-                    
+
         costPoints.append(utils.function(global_solution, profits))
         iter += 1
 
@@ -63,16 +70,3 @@ def particle_swarm(Nmax, num_p, num, weights, time, profits, total_time, total_w
     print(f'FUNKCJA CELU = {utils.function(global_solution, profits)}')
 
     return global_solution
-
-
-
-
-
-
-
-
-
-
-
-
-
