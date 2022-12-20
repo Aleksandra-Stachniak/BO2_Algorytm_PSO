@@ -5,7 +5,8 @@ import random
 import numpy as np
 
 
-def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
+def particle_swarm(Nmax, num, product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight):
+
     '''
     :param Nmax: maksymalna liczba iteracji
     :param num: liczba cząstek
@@ -17,8 +18,8 @@ def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
     '''
 
     # najlepsze rozwiązanie globalne
-    global_solution = utils.production_volume(num, weights, time[0], time[1], time[2],
-                                              profits, total_time[0], total_time[1], total_time[2], total_weight)
+    global_solution = utils.production_volume(num, product_weights, time_1, time_2, time_3,
+                                              profits, total_time_1, total_time_2, total_time_3, total_weight)
 
     start_solution = global_solution
     print(f"ROZWIĄZANIE POCZĄTKOWE: \n{start_solution}")
@@ -38,8 +39,8 @@ def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
 
     while iter < Nmax:
         for i in range(num):
-            r1 = random.randint(0, 1)
-            r2 = random.randint(0, 1)
+            r1 = random.randint(0,1)
+            r2 = random.randint(0,1)
 
             w = 1  # – współczynnik inercji ruchu cząstki,
             c1 = 1  # – stała dodatnia, tzw.wskaźnik samooceny,
@@ -50,23 +51,24 @@ def particle_swarm(Nmax, num, weights, time, profits, total_time, total_weight):
             # aktualizacja pozycji cząsteczek
             x[i] = x[i - 1] + v[i]
 
-            if utils.function(x[i], profits, weights, time[0], time[1], time[2], total_time[0], total_time[1],
-                              total_time[2], total_weight) > utils.function(p[i], profits, weights, time[0], time[1],
-                                                                            time[2], total_time[0], total_time[1],
-                                                                            total_time[2], total_weight):
+            if utils.function(x[i], profits, product_weights, time_1, time_2, time_3, total_time_1,
+                              total_time_2, total_time_3, total_weight) > utils.function(p[i], profits, product_weights,
+                                                                                         time_1, time_2, time_3,
+                                                                                         total_time_1, total_time_2, total_time_3,
+                                                                                         total_weight):
                 p[i] = x[i]  # aktualizacja najlepszego rozwiązania cząsteczki
 
-                if utils.function(p[i], profits, weights, time[0], time[1], time[2], total_time[0], total_time[1],
-                                  total_time[2], total_weight) > utils.function(global_solution, profits, weights,
-                                                                                time[0], time[1], time[2],
-                                                                                total_time[0], total_time[1],
-                                                                                total_time[2], total_weight):
+                if utils.function(p[i], profits, product_weights, time_1, time_2, time_3, total_time_1,
+                                  total_time_2, total_time_3, total_weight) > utils.function(global_solution, profits, product_weights,
+                                                                                             time_1, time_2, time_3,
+                                                                                             total_time_1, total_time_2, total_time_3,
+                                                                                             total_weight):
                     global_solution = p[i]  # aktualizacja najlepszego rozwiązania roju
 
-        costPoints.append(utils.function(global_solution, profits))
+        costPoints.append(utils.function(global_solution, profits, product_weights, time_1, time_2, time_3, total_time_1, total_time_2, total_time_3, total_weight))
         iter += 1
 
     print(f"ROZWIĄZANIE KOŃCOWE: \n{global_solution}")
-    print(f'FUNKCJA CELU = {utils.function(global_solution, profits)}')
+    print(f'FUNKCJA CELU = {utils.function(global_solution, profits, product_weights, time_1, time_2, time_3, total_time_1, total_time_2, total_time_3, total_weight)}')
 
     return global_solution
