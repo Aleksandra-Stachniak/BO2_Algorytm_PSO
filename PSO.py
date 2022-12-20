@@ -7,15 +7,19 @@ import numpy as np
 
 def particle_swarm(Nmax, num, product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight):
 
-    '''
+    """
     :param Nmax: maksymalna liczba iteracji
     :param num: liczba cząstek
-    :param weights: lista wag produktów
-    :param time: krotka list odpowiadających czasom dla poszczególnych etapów
+    :param product_weights: lista wag produktów
+    :param time_1: lista odpowiadających czasów dla etapu 1
+    :param time_2: lista odpowiadających czasów dla etapu 2
+    :param time_3: lista odpowiadających czasów dla etapu 3
     :param profits: lista zysków
-    :param total_time:  lista całkowitych czasów dla poszczególnych etapów
+    :param total_time_1: całkowity czas etapu 1
+    :param total_time_2: całkowity czas etapu 2
+    :param total_time_3: całkowity czas etapu 3
     :param total_weight:  wartość całkowitej masy dostępnego surowca
-    '''
+    """
 
     # najlepsze rozwiązanie globalne
     global_solution = utils.production_volume(num, product_weights, time_1, time_2, time_3,
@@ -70,5 +74,4 @@ def particle_swarm(Nmax, num, product_weights, time_1, time_2, time_3, profits, 
 
     print(f"ROZWIĄZANIE KOŃCOWE: \n{global_solution}")
     print(f'FUNKCJA CELU = {utils.function(global_solution, profits, product_weights, time_1, time_2, time_3, total_time_1, total_time_2, total_time_3, total_weight)}')
-
     return global_solution
