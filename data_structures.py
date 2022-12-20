@@ -20,6 +20,7 @@ def parameters(number_products:int):
     total_weight - całkowita masa surowca, którą dysponujemy do wytworzenia produktów
 `   """
 
+    global time_1, product_weights, time_2, profits, time_3
     if number_products <= 0:
       print('Liczba produktów nie może przyjmować wartości niedodatnich')
     else:
@@ -40,11 +41,11 @@ def main():
     number_products = 5
     product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight  = parameters(number_products)
     products = utils.production_volume(number_products, product_weights, time_1, time_2, time_3,
-                      profits, total_time_1, total_time_2, total_time_3, total_weight)
+                                       profits, total_time_1, total_time_2, total_time_3, total_weight)
     products_T = products.transpose()
 
-    PSO.particle_swarm(10, 5, product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2,
-                   total_time_3, total_weight)
+    PSO.particle_swarm(50, 5, product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2,
+                       total_time_3, total_weight)
 
     print(total_time_1)
     print(time_1.dot(products_T))
@@ -54,8 +55,6 @@ def main():
     print(time_3.dot(products_T))
     print(total_weight)
     print(product_weights.dot(products_T))
-    print(utils.function(profits, products))
-    print(products) 
 
 if __name__ == "__main__":
     main()
