@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
+import utils
+import PSO
 
 def parameters(number_products:int):
     """
@@ -19,8 +21,8 @@ def parameters(number_products:int):
 `   """
 
     if number_products <= 0:
-      print('Liczba produktów nie może przyjmować wartości niedodatnich') 
-    else:    
+      print('Liczba produktów nie może przyjmować wartości niedodatnich')
+    else:
       product_weights = np.random.randint(1, 40, size=(1,number_products))
       time_1 = np.random.randint(1, 10, size=(1,number_products))
       time_2 = np.random.randint(1, 5, size=(1,number_products))
@@ -35,11 +37,14 @@ def parameters(number_products:int):
 
 
 def main():
-    number_products = 10
+    number_products = 5
     product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight  = parameters(number_products)
-    products = production_volume(number_products, product_weights, time_1, time_2, time_3,
+    products = utils.production_volume(number_products, product_weights, time_1, time_2, time_3,
                       profits, total_time_1, total_time_2, total_time_3, total_weight)
     products_T = products.transpose()
+
+    PSO.particle_swarm(10, 5, product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2,
+                   total_time_3, total_weight)
 
     print(total_time_1)
     print(time_1.dot(products_T))
@@ -49,7 +54,7 @@ def main():
     print(time_3.dot(products_T))
     print(total_weight)
     print(product_weights.dot(products_T))
-    print(function(profits, products))
+    print(utils.function(profits, products))
     print(products) 
 
 if __name__ == "__main__":
