@@ -43,15 +43,15 @@ def particle_swarm(Nmax, num, product_weights, time_1, time_2, time_3, profits, 
 
     while iter < Nmax:
         for i in range(num):
-            r1 = random.randint(0,1)
-            r2 = random.randint(0,1)
+            r1 = random.random()
+            r2 = random.random()
 
             w = 1  # – współczynnik inercji ruchu cząstki,
             c1 = 1  # – stała dodatnia, tzw.wskaźnik samooceny,
             c2 = 1  # – stała dodatnia, wskaźnik społecznościowy (zaufanie położeniu sąsiadów)
 
             # aktualizacja prędkosci cząsteczek
-            v[i] = w * v[i - 1] + c1 * r1 * (p[i - 1] - x[i - 1]) + c2 * r2 * (global_solution - x[i - 1])
+            v[i] = np.around(w * v[i - 1] + c1 * r1 * (p[i - 1] - x[i - 1]) + c2 * r2 * (global_solution - x[i - 1]))
             # aktualizacja pozycji cząsteczek
             x[i] = x[i - 1] + v[i]
 
