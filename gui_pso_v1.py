@@ -11,7 +11,7 @@ import tkinter
 
 okno1 = tkinter.Tk()
 okno1.title('Optymalizacja zysków z produkcji')
-okno1.geometry('480x620')
+okno1.geometry('480x680')
 
 #Pole do wpisania liczby produktów
 l_n = tkinter.Label(okno1, text='Podaj liczbę produktów:')
@@ -52,7 +52,8 @@ l_r2.pack()
 p_r2.pack()
 ls1a = tkinter.Label(okno1, text='')
 ls1a.pack()
-def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g):
+
+def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g,e_fc,e_i,e_e):
     def f():
         n = p_n.get()
         N_max = p_N_max.get()
@@ -63,48 +64,81 @@ def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g):
         r2 = p_r2.get()
 
         n_ = int(n)
-        w_ = int(w)
-        c1_ = int(c1)
-        c2_ = int(c2)
-        ps = str(n_ + w_)
-        gs = str(c1_ + c2_)
-        e_s['text'] = ps
-        e_g['text'] = gs
+        N_max_ = int(N_max)
+        w_ = float(w)
+        c1_ = float(c1)
+        c2_ = float(c2)
+        r1_ = float(r1)
+        r2_ = float(r2)
+
+        # ========== zmiany =================
+        # pobieranie parametrów:
+
+        # products = utils.production_volume()
+        # *parametry* = parameters(n)
+        # fun = utils.function( *parametry* )
+        #
+        # global_solution, iter = PSO.particle_swarm( *parametry*, w_, c1_, c2_, r1_, r2_)
+        # można dodać do argumentów parametry omega, c1, c2, r1, r2,
+        # a do wartosci zwracanych rozw. początkowe i ilość iteracji
+        #
+
+        # ====================================
+        # ograniczenia
+        if type(n_) != int or type(N_max_) != int or type(w_) != float or type(c1_) != float or type(c2_) != float or type(
+                r1_) != float or type(c2_) != float:
+            e_e['text'] = 'błędne dane'
+
+        if n_ < 1 or N_max_ < 1:
+            e_e['text'] = 'błędne dane'
+        if w_ < 0 or w_ > 1:
+            e_e['text'] = 'błędne dane'
+        if c1_ < 0 or c1_ > 1:
+            e_e['text'] = 'błędne dane'
+        if c2_ < 0 or c2_ > 1:
+            e_e['text'] = 'błędne dane'
+        if r1_ < 0 or r1_ > 1:
+            e_e['text'] = 'błędne dane'
+        if r2_ < 0 or r2_ > 1:
+            e_e['text'] = 'błędne dane'
+        #if iter > N_max_:
+        #   e_e['text'] = 'przekroczono ilość iteracji'
+        #else:
+        # e_s['text'] = str(start_solution)
+        # e_g['text'] = str(global_solution)
+        # e_fc['text'] = str(iter)
+        # e_i['text'] = str(fun)
+
+        else:
+            a = n_ + N_max_
+            b = w_ + n_
+            c = c1_ + c2_
+            d = r1_ + r2_
+
+            e_s['text'] = str(a)
+            e_g['text'] = str(b)
+            e_fc['text'] = str(c)
+            e_i['text'] = str(d)
+
     return f
 #funkcja czyszcząca parametry
-def button_func(a, b, c, d, e, f, g):
+def button_func(e1, e2, e3, e4, e5, e6, e7, l1, l2, l3, l4, l5):
     def func():
-        a.delete(0, tkinter.END)
-        b.delete(0, tkinter.END)
-        c.delete(0, tkinter.END)
-        d.delete(0, tkinter.END)
-        e.delete(0, tkinter.END)
-        f.delete(0, tkinter.END)
-        g.delete(0, tkinter.END)
+        e1.delete(0, tkinter.END)
+        e2.delete(0, tkinter.END)
+        e3.delete(0, tkinter.END)
+        e4.delete(0, tkinter.END)
+        e5.delete(0, tkinter.END)
+        e6.delete(0, tkinter.END)
+        e7.delete(0, tkinter.END)
+        l1['text'] = ''
+        l2['text'] = ''
+        l3['text'] = ''
+        l4['text'] = ''
+        l5['text'] = ''
     return func
 
-b = tkinter.Button(okno1, text='clear', command=button_func(p_n, p_N_max, p_omega, p_c1, p_c2, p_r1, p_r2))
-b.pack()
-
-#Pobieranie parametrów
-#def get_params(p1, p2, p3, p4, p5, p6, p7):
-    #if int(p_n.get()) > 0 and int(p_N_max.get()) > 0 and 0 < int(p_omega.get()) < 1 and 0 < int(p_c1.get()) < 1 and 0 < int(p_c2.get()) < 1 and 0 < int(p_r1.get()) < 1 and 0 < int(p_r2.get()) < 1:
-
-
-    #else:
-        #p_error['text'] = 'Błąd - popraw dane'
-
-#n, N_max, w, c1, c2, r1, r2 = get_params(p_n, p_N_max, p_omega, p_c1, p_c2, p_r1, p_r2)
-
-
-#ps = particle_swarm.start_solution
-#gs = particle_swarm.global_solution
-#fun_celu = particle_swarm.utils.function
-#i = particle_swarm.iter
-
-#Pola do wyświtlenia wyników
-ls2 = tkinter.Label(okno1, text='')
-ls2.pack()
+#Pola do wyświetlenia wyników
 l_start_solution = tkinter.Label(okno1, text='Rozwiązanie początkowe:')
 e_start_solution = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", borderwidth=2)
 
@@ -113,10 +147,23 @@ e_global_solution = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", bor
 
 l_fun_celu = tkinter.Label(okno1, text='Wartość funkcji celu:')
 e_fun_celu = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", borderwidth=2)
+
 l_iter = tkinter.Label(okno1, text='Ilosć iteracji:')
 e_iter = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", borderwidth=2)
-button_gen = tkinter.Button(okno1, text='wynik', command=oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_start_solution,e_global_solution))
-button_gen.pack()
+
+l_error_info = tkinter.Label(okno1, text='Informacja o błędzie')
+e_error = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", borderwidth=2)
+
+b_clear = tkinter.Button(okno1, text='clear', command=button_func(p_n, p_N_max, p_omega, p_c1, p_c2, p_r1, p_r2, e_start_solution, e_global_solution, e_fun_celu, e_iter, e_error))
+
+b_gen = tkinter.Button(okno1, text='wynik', command=oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_start_solution,e_global_solution, e_fun_celu, e_iter, e_error))
+
+b_clear.pack()
+ls1b = tkinter.Label(okno1, text='')
+ls1b.pack()
+b_gen.pack()
+ls2 = tkinter.Label(okno1, text='')
+ls2.pack()
 l_start_solution.pack()
 e_start_solution.pack()
 l_global_solution.pack()
@@ -127,8 +174,8 @@ l_iter.pack()
 e_iter.pack()
 ls4 = tkinter.Label(okno1, text='')
 ls4.pack()
-p_error = tkinter.Entry(okno1)
-p_error.pack()
+l_error_info.pack()
+e_error.pack()
 
 #wykres = tkinter.Tk()
 #wykres.title('Wykres funkci celu')
@@ -137,10 +184,3 @@ p_error.pack()
 #do zdefiniowania wyświetlanie wykresu (matplotlib)
 
 okno1.mainloop()
-
-#do rzeczy zwracanych przez particle_swarm trzeba by dodać global_solution, start_solution iter i wartość funkcji celu
-#powiązać te wartości z odpowiednimi oknami, dodać ograniczenia dla wpisywanych wartości
-#(najlepiej stworzyć funkcje do tworzenia pól itp.)
-#dodac komunikat o błędzie, gdy zostaną wpisane złe dane,
-#odać możliwość powtórnego wykonania algorytmu
-#dodać okno do wyświetlania wykresu wartości funkcji celu
