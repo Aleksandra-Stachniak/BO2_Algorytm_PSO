@@ -81,28 +81,60 @@ def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g,e_fc,e_i,e_e):
         # global_solution, iter = PSO.particle_swarm( *parametry*, w_, c1_, c2_, r1_, r2_)
         # można dodać do argumentów parametry omega, c1, c2, r1, r2,
         # a do wartosci zwracanych rozw. początkowe i ilość iteracji
-        #
-
         # ====================================
         # ograniczenia
         if type(n_) != int or type(N_max_) != int or type(w_) != float or type(c1_) != float or type(c2_) != float or type(
                 r1_) != float or type(c2_) != float:
             e_e['text'] = 'błędne dane'
+            e_s['text'] = 'err404 XD'
+            e_g['text'] = 'err404 XD'
+            e_fc['text'] = 'err404 XD'
+            e_i['text'] = 'err404 XD'
 
-        if n_ < 1 or N_max_ < 1:
+        if n_ < 1:
             e_e['text'] = 'błędne dane'
+            e_s['text'] = 'err404 XD'
+            e_g['text'] = 'err404 XD'
+            e_fc['text'] = 'err404 XD'
+            e_i['text'] = 'err404 XD'
+        if N_max_ < 1:
+            e_e['text'] = 'błędne dane'
+            e_s['text'] = 'err404 XD'
+            e_g['text'] = 'err404 XD'
+            e_fc['text'] = 'err404 XD'
+            e_i['text'] = 'err404 XD'
         if w_ < 0 or w_ > 1:
             e_e['text'] = 'błędne dane'
+            e_s['text'] = 'err404 XD'
+            e_g['text'] = 'err404 XD'
+            e_fc['text'] = 'err404v'
+            e_i['text'] = 'err404 XD'
         if c1_ < 0 or c1_ > 1:
             e_e['text'] = 'błędne dane'
+            e_s['text'] = 'err404 XD'
+            e_g['text'] = 'err404 XD'
+            e_fc['text'] = 'err404 XD'
+            e_i['text'] = 'err404 XD'
         if c2_ < 0 or c2_ > 1:
             e_e['text'] = 'błędne dane'
+            e_s['text'] = 'err404 XD'
+            e_g['text'] = 'err404 XD'
+            e_fc['text'] = 'err404 XD'
+            e_i['text'] = 'err404 XD'
         if r1_ < 0 or r1_ > 1:
             e_e['text'] = 'błędne dane'
+            e_s['text'] = 'err404 XD'
+            e_g['text'] = 'err404 XD'
+            e_fc['text'] = 'err404 XD'
+            e_i['text'] = 'err404 XD'
         if r2_ < 0 or r2_ > 1:
             e_e['text'] = 'błędne dane'
+            e_s['text'] = 'err404 XD'
+            e_g['text'] = 'err404 XD'
+            e_fc['text'] = 'err404 XD'
+            e_i['text'] = 'err404 XD'
         #if iter > N_max_:
-        #   e_e['text'] = 'przekroczono ilość iteracji'
+        #    e_e['text'] = 'Przekroczono ilość iteracji'
         #else:
         # e_s['text'] = str(start_solution)
         # e_g['text'] = str(global_solution)
