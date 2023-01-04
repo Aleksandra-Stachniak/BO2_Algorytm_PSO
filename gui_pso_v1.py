@@ -141,6 +141,7 @@ def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g,e_fc,e_i,e_e):
         # e_fc['text'] = str(iter)
         # e_i['text'] = str(fun)
 
+        # test
         else:
             a = n_ + N_max_
             b = w_ + n_
@@ -209,10 +210,51 @@ ls4.pack()
 l_error_info.pack()
 e_error.pack()
 
-#wykres = tkinter.Tk()
-#wykres.title('Wykres funkci celu')
-#wykres.geometry('480x480')
+#=====================WYKRES=====================
+# W funkcji particle_swarm można dodać tablicę (wektor) iteracji i odpowiadającą jej tablicę (wektor) funkcji celu.
 
-#do zdefiniowania wyświetlanie wykresu (matplotlib)
+#from matplotlib.backends.backend_tkagg import (
+#    FigureCanvasTkAgg, NavigationToolbar2Tk)
+# Implement the default Matplotlib key bindings.
+#from matplotlib.backend_bases import key_press_handler
+#from matplotlib.figure import Figure
+
+#okno_wykres = tkinter.Tk()
+#okno_wykres.wm_title("Wykres funkcji celu")
+
+#fig = Figure(figsize=(5, 4), dpi=100)
+
+#iter_tab = [1, 2, ..., N] (array)
+#f_celu_tab = [f1, f2, ..., f_N] (array)
+
+#fig.add_subplot(111).plot(iter_tab, f_celu_tab)
+
+#canvas = FigureCanvasTkAgg(fig, master=okno_wykres)  # A tk.DrawingArea.
+#canvas.draw()
+#canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+
+#toolbar = NavigationToolbar2Tk(canvas, okno_wykres)
+#toolbar.update()
+#canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+
+#def on_key_press(event):
+#    print("you pressed {}".format(event.key))
+#    key_press_handler(event, canvas, toolbar)
+
+#canvas.mpl_connect("key_press_event", on_key_press)
+
+#def _quit():
+#    root.quit()     # stops mainloop
+#    root.destroy()  # this is necessary on Windows to prevent
+                    # Fatal Python Error: PyEval_RestoreThread: NULL tstate
+
+
+#button_quit = tkinter.Button(master=okno_wykres, text="Quit", command=_quit)
+#button_quit.pack(side=tkinter.BOTTOM)
+
+#okno_wykres.mainloop()
+# If you put okno_wykres.destroy() here, it will cause an error if the window is
+# closed with the window manager.
+#================================================
 
 okno1.mainloop()
