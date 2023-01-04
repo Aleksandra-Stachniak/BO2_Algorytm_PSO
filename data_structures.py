@@ -40,13 +40,12 @@ def parameters(number_products: int):
 
 def main():
     number_products = 5
-    Nmax = 50  # maksymalna liczba iteracji
+    Nmax = 100  # maksymalna liczba iteracji
     num = 20 # liczba cząstek
     product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight = parameters(
         number_products)
     products = utils.production_volume(number_products, product_weights, time_1, time_2, time_3,
                                        profits, total_time_1, total_time_2, total_time_3, total_weight)
-    products_T = products.transpose()
 
     PSO.particle_swarm(Nmax, number_products, num, product_weights, time_1, time_2, time_3, profits, total_time_1,
                        total_time_2,

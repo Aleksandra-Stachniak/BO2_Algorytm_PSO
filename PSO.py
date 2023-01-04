@@ -93,7 +93,6 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
         iter += 1
 
     print(f"ROZWIĄZANIE KOŃCOWE: \n{global_solution}")
-    print(
-        f'FUNKCJA CELU = {utils.function(global_solution, profits, product_weights, time_1, time_2, time_3, total_time_1, total_time_2, total_time_3, total_weight)}')
+    print(f'FUNKCJA CELU = {utils.function(global_solution, profits, product_weights, time_1, time_2, time_3, total_time_1, total_time_2, total_time_3, total_weight)}')
     print(f"FUNKCJE CELU W KOLEJNYCH ITERACJACH: \n{costPoints}")
     return global_solution
