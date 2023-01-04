@@ -1,3 +1,6 @@
+# !/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 
 
@@ -36,30 +39,9 @@ def production_volume(number_products: int, product_weights: np.array, time_1: n
       Zwracamy rozwiązanie, którym jest wektor zawierający wielkość produkcji dla poszczególnego produktu 
 `    """
 
-    products = np.random.randint(1, 100, size=(1, number_products))
-    products_T = products.transpose()
-
     while True:
         products = np.random.randint(1, 100, size=(1, number_products))
         products_T = products.transpose()
-        if time_1.dot(products_T) <= total_time_1:
-            break
-
-    while True:
-        products = np.random.randint(1, 100, size=(1, number_products))
-        products_T = products.transpose()
-        if time_2.dot(products_T) <= total_time_2:
-            break
-
-    while True:
-        products = np.random.randint(1, 100, size=(1, number_products))
-        products_T = products.transpose()
-        if time_3.dot(products_T) <= total_time_3:
-            break
-
-    while True:
-        products = np.random.randint(1, 100, size=(1, number_products))
-        products_T = products.transpose()
-        if product_weights.dot(products_T) <= total_weight:
-            break
-    return products
+        if time_1.dot(products_T) <= total_time_1 and time_2.dot(products_T) <= total_time_2:
+            if time_3.dot(products_T) <= total_time_3 and product_weights.dot(products_T) <= total_weight:
+                return products
