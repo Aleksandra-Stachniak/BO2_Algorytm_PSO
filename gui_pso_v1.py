@@ -164,7 +164,7 @@ def chart(Nmax, costPoints, fun):
 
     fig.add_subplot(111).plot(iter_tab, f_celu_tab)
 
-    canvas = FigureCanvasTkAgg(fig, master=okno_wykres)  # A tk.DrawingArea.
+    canvas = FigureCanvasTkAgg(fig, master=okno_wykres)
     canvas.draw()
     canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
@@ -173,14 +173,14 @@ def chart(Nmax, costPoints, fun):
     canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
     def on_key_press(event):
-       print("you pressed {}".format(event.key))
-       key_press_handler(event, canvas, toolbar)
+        print("you pressed {}".format(event.key))
+        key_press_handler(event, canvas, toolbar)
 
     canvas.mpl_connect("key_press_event", on_key_press)
 
     def _quit():
-       root.quit()     # stops mainloop
-       root.destroy()  # this is necessary on Windows to prevent
+        okno_wykres.quit()     # stops mainloop
+        okno_wykres.destroy()  # this is necessary on Windows to prevent
 
     button_quit = tkinter.Button(master=okno_wykres, text="Quit", command=_quit)
     button_quit.pack(side=tkinter.BOTTOM)
