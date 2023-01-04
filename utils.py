@@ -26,7 +26,7 @@ def function(sollution: np.array, profits: np.array, weights: np.array, time_1: 
     if weights.dot(sollution_T) > total_weight:
         return 0
 
-    fun = profits.dot(sollution_T)
+    fun = int(profits.dot(sollution_T)[0][0])
     return fun
 
 
