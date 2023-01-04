@@ -35,8 +35,6 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
     v = []  # predkosc
 
     costPoints = []
-    costPointsx = []
-    costPointsp = []
 
     for i in range(num):
         p.append(global_solution)
