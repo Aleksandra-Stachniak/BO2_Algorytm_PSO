@@ -5,10 +5,12 @@ import random
 import numpy as np
 
 
-def particle_swarm(Nmax, num, product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight):
-
+def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, time_3, profits, total_time_1,
+                   total_time_2,
+                   total_time_3, total_weight):
     """
     :param Nmax: maksymalna liczba iteracji
+    :param products_num: liczba produktów
     :param num: liczba cząstek
     :param product_weights: lista wag produktów
     :param time_1: lista odpowiadających czasów dla etapu 1
@@ -22,7 +24,7 @@ def particle_swarm(Nmax, num, product_weights, time_1, time_2, time_3, profits, 
     """
 
     # najlepsze rozwiązanie globalne
-    global_solution = utils.production_volume(num, product_weights, time_1, time_2, time_3,
+    global_solution = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
                                               profits, total_time_1, total_time_2, total_time_3, total_weight)
 
     start_solution = global_solution
@@ -33,6 +35,8 @@ def particle_swarm(Nmax, num, product_weights, time_1, time_2, time_3, profits, 
     v = []  # predkosc
 
     costPoints = []
+    costPointsx = []
+    costPointsp = []
 
     for i in range(num):
         p.append(global_solution)
@@ -40,13 +44,15 @@ def particle_swarm(Nmax, num, product_weights, time_1, time_2, time_3, profits, 
         v.append(1)
 
     iter = 0
+    prev = global_solution
 
+    counter = 0
     while iter < Nmax:
         for i in range(num):
             r1 = random.random()
             r2 = random.random()
 
-            w = 1  # – współczynnik inercji ruchu cząstki,
+            w = 0.8  # – współczynnik inercji ruchu cząstki,
             c1 = 1  # – stała dodatnia, tzw.wskaźnik samooceny,
             c2 = 1  # – stała dodatnia, wskaźnik społecznościowy (zaufanie położeniu sąsiadów)
 
@@ -55,23 +61,43 @@ def particle_swarm(Nmax, num, product_weights, time_1, time_2, time_3, profits, 
             # aktualizacja pozycji cząsteczek
             x[i] = x[i - 1] + v[i]
 
-            if utils.function(x[i], profits, product_weights, time_1, time_2, time_3, total_time_1,
-                              total_time_2, total_time_3, total_weight) > utils.function(p[i], profits, product_weights,
-                                                                                         time_1, time_2, time_3,
-                                                                                         total_time_1, total_time_2, total_time_3,
-                                                                                         total_weight):
-                p[i] = x[i]  # aktualizacja najlepszego rozwiązania cząsteczki
+            obj_f_x = utils.function(x[i], profits, product_weights, time_1, time_2, time_3, total_time_1,
+                                     total_time_2, total_time_3, total_weight)
+            obj_f_p = utils.function(p[i], profits, product_weights, time_1, time_2, time_3, total_time_1,
+                                     total_time_2, total_time_3, total_weight)
+            obj_f_g = utils.function(global_solution, profits, product_weights, time_1, time_2, time_3,
+                                     total_time_1, total_time_2, total_time_3, total_weight)
 
-                if utils.function(p[i], profits, product_weights, time_1, time_2, time_3, total_time_1,
-                                  total_time_2, total_time_3, total_weight) > utils.function(global_solution, profits, product_weights,
-                                                                                             time_1, time_2, time_3,
-                                                                                             total_time_1, total_time_2, total_time_3,
-                                                                                             total_weight):
+            if obj_f_x > obj_f_p:
+                p[i] = x[i]  # aktualizacja najlepszego rozwiązania cząsteczki
+                if obj_f_p > obj_f_g:
+                    prev = global_solution
                     global_solution = p[i]  # aktualizacja najlepszego rozwiązania roju
 
-        costPoints.append(utils.function(global_solution, profits, product_weights, time_1, time_2, time_3, total_time_1, total_time_2, total_time_3, total_weight))
+        obj_f_prev = utils.function(prev, profits, product_weights, time_1, time_2, time_3, total_time_1,
+                                    total_time_2, total_time_3, total_weight)
+        obj_f_g = utils.function(global_solution, profits, product_weights, time_1, time_2, time_3,
+                                 total_time_1, total_time_2, total_time_3, total_weight)
+
+        print(obj_f_prev, obj_f_g)
+        if obj_f_prev == obj_f_g:
+            counter += 1
+        else:
+            counter = 0
+
+        if counter >= 10:
+            global_solution = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
+                                                      profits, total_time_1, total_time_2, total_time_3, total_weight)
+            counter = 0
+
+        obj_f_g = utils.function(global_solution, profits, product_weights, time_1, time_2, time_3,
+                                 total_time_1, total_time_2, total_time_3, total_weight)
+        costPoints.append(obj_f_g)
+
         iter += 1
 
     print(f"ROZWIĄZANIE KOŃCOWE: \n{global_solution}")
-    print(f'FUNKCJA CELU = {utils.function(global_solution, profits, product_weights, time_1, time_2, time_3, total_time_1, total_time_2, total_time_3, total_weight)}')
+    print(
+        f'FUNKCJA CELU = {utils.function(global_solution, profits, product_weights, time_1, time_2, time_3, total_time_1, total_time_2, total_time_3, total_weight)}')
+    print(f"FUNKCJE CELU W KOLEJNYCH ITERACJACH: \n{costPoints}")
     return global_solution
