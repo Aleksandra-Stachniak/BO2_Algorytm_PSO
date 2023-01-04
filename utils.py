@@ -14,6 +14,10 @@ def function(sollution: np.array, profits: np.array, weights: np.array, time_1: 
     sollution_T = sollution.transpose()
 
     # Sprawdzenie spełnienia warunków rozwiązania
+    for el in sollution_T:
+        if el < 0:
+            return 0
+
     if time_1.dot(sollution_T) > total_time_1:
         return 0
 
