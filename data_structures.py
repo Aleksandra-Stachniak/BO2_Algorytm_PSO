@@ -1,3 +1,4 @@
+# !/usr/bin/python
 # -*- coding: utf-8 -*-
 import numpy as np
 import utils
@@ -39,17 +40,19 @@ def parameters(number_products: int):
 
 
 def main():
-    number_products = 5
-    Nmax = 100  # maksymalna liczba iteracji
+    number_products = 10
+    Nmax = 50  # maksymalna liczba iteracji
     num = 20 # liczba cząstek
+    w = 0.8
+    c1 = 1
+    c2 = 1
+    r1 = 0.4
+    r2 = 0.7
     product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight = parameters(
         number_products)
-    products = utils.production_volume(number_products, product_weights, time_1, time_2, time_3,
-                                       profits, total_time_1, total_time_2, total_time_3, total_weight)
-
     PSO.particle_swarm(Nmax, number_products, num, product_weights, time_1, time_2, time_3, profits, total_time_1,
                        total_time_2,
-                       total_time_3, total_weight)
+                       total_time_3, total_weight, w, c1, c2, r1, r2)
 
 if __name__ == "__main__":
     main()

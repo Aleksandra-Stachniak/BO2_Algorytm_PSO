@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import tkinter
-#import utils
-#import PSO
-#from PSO import particle_swarm
-#import data_structures
-#import random
-#import numpy as np
+import utils
+import PSO
+from PSO import particle_swarm
+import data_structures
+import random
+import numpy as np
 
 okno1 = tkinter.Tk()
 okno1.title('Optymalizacja zysków z produkcji')
@@ -27,6 +27,8 @@ l_params.pack()
 
 l_N_max = tkinter.Label(okno1, text='Maksymalna liczba iteracji:')
 p_N_max = tkinter.Entry(okno1)
+l_num = tkinter.Label(okno1, text='Liczba cząstek')
+p_num = tkinter.Entry(okno1)
 l_omega = tkinter.Label(okno1, text='\u03C9')
 p_omega = tkinter.Entry(okno1)
 l_c1 = tkinter.Label(okno1, text='c1')
@@ -40,6 +42,8 @@ p_r2 = tkinter.Entry(okno1)
 
 l_N_max.pack()
 p_N_max.pack()
+l_num.pack()
+p_num.pack()
 l_omega.pack()
 p_omega.pack()
 l_c1.pack()
@@ -53,109 +57,46 @@ p_r2.pack()
 ls1a = tkinter.Label(okno1, text='')
 ls1a.pack()
 
-def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g,e_fc,e_i,e_e):
+def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g,e_fc,e_e):
     def f():
-        n = p_n.get()
-        N_max = p_N_max.get()
-        w = p_omega.get()
-        c1 = p_c1.get()
-        c2 = p_c2.get()
-        r1 = p_r1.get()
-        r2 = p_r2.get()
-
-        n_ = int(n)
-        N_max_ = int(N_max)
-        w_ = float(w)
-        c1_ = float(c1)
-        c2_ = float(c2)
-        r1_ = float(r1)
-        r2_ = float(r2)
+        number_products = int(p_n.get())
+        Nmax = int(p_N_max.get())
+        w = float(p_omega.get())
+        c1 = float(p_c1.get())
+        c2 = float(p_c2.get())
+        r1 = float(p_r1.get())
+        r2 = float(p_r2.get())
+        num = int(p_num.get())
 
         # ========== zmiany =================
         # pobieranie parametrów:
 
-        # products = utils.production_volume()
-        # *parametry* = parameters(n)
-        # fun = utils.function( *parametry* )
-        #
-        # global_solution, iter = PSO.particle_swarm( *parametry*, w_, c1_, c2_, r1_, r2_)
-        # można dodać do argumentów parametry omega, c1, c2, r1, r2,
-        # a do wartosci zwracanych rozw. początkowe i ilość iteracji
+        product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight = data_structures.parameters(number_products)
+        start_solution, global_solution, fun, costPoints, iter = PSO.particle_swarm(Nmax, number_products, num, product_weights, time_1, time_2, time_3, profits, total_time_1,
+                           total_time_2, total_time_3, total_weight, w, c1, c2, r1, r2)
+
         # ====================================
         # ograniczenia
-        if type(n_) != int or type(N_max_) != int or type(w_) != float or type(c1_) != float or type(c2_) != float or type(
-                r1_) != float or type(c2_) != float:
+        if type(number_products) != int or type(Nmax) != int or type(w) != float or type(c1) != float or type(c2) != float or type(
+                r1) != float or type(c2) != float:
             e_e['text'] = 'błędne dane'
             e_s['text'] = 'err404 XD'
             e_g['text'] = 'err404 XD'
             e_fc['text'] = 'err404 XD'
-            e_i['text'] = 'err404 XD'
 
-        if n_ < 1:
+        if number_products < 1 or r2 < 0 or r2 > 1 or Nmax < 1 or w < 0 or w > 1 or c1 < 0 or c2 < 0 or r1 < 0 or r1 > 1:
             e_e['text'] = 'błędne dane'
             e_s['text'] = 'err404 XD'
             e_g['text'] = 'err404 XD'
             e_fc['text'] = 'err404 XD'
-            e_i['text'] = 'err404 XD'
-        if N_max_ < 1:
-            e_e['text'] = 'błędne dane'
-            e_s['text'] = 'err404 XD'
-            e_g['text'] = 'err404 XD'
-            e_fc['text'] = 'err404 XD'
-            e_i['text'] = 'err404 XD'
-        if w_ < 0 or w_ > 1:
-            e_e['text'] = 'błędne dane'
-            e_s['text'] = 'err404 XD'
-            e_g['text'] = 'err404 XD'
-            e_fc['text'] = 'err404v'
-            e_i['text'] = 'err404 XD'
-        if c1_ < 0 or c1_ > 1:
-            e_e['text'] = 'błędne dane'
-            e_s['text'] = 'err404 XD'
-            e_g['text'] = 'err404 XD'
-            e_fc['text'] = 'err404 XD'
-            e_i['text'] = 'err404 XD'
-        if c2_ < 0 or c2_ > 1:
-            e_e['text'] = 'błędne dane'
-            e_s['text'] = 'err404 XD'
-            e_g['text'] = 'err404 XD'
-            e_fc['text'] = 'err404 XD'
-            e_i['text'] = 'err404 XD'
-        if r1_ < 0 or r1_ > 1:
-            e_e['text'] = 'błędne dane'
-            e_s['text'] = 'err404 XD'
-            e_g['text'] = 'err404 XD'
-            e_fc['text'] = 'err404 XD'
-            e_i['text'] = 'err404 XD'
-        if r2_ < 0 or r2_ > 1:
-            e_e['text'] = 'błędne dane'
-            e_s['text'] = 'err404 XD'
-            e_g['text'] = 'err404 XD'
-            e_fc['text'] = 'err404 XD'
-            e_i['text'] = 'err404 XD'
-        #if iter > N_max_:
-        #    e_e['text'] = 'Przekroczono ilość iteracji'
-        #else:
-        # e_s['text'] = str(start_solution)
-        # e_g['text'] = str(global_solution)
-        # e_fc['text'] = str(iter)
-        # e_i['text'] = str(fun)
-
-        # test
         else:
-            a = n_ + N_max_
-            b = w_ + n_
-            c = c1_ + c2_
-            d = r1_ + r2_
-
-            e_s['text'] = str(a)
-            e_g['text'] = str(b)
-            e_fc['text'] = str(c)
-            e_i['text'] = str(d)
-
+            e_s['text'] = str(start_solution)
+            e_g['text'] = str(global_solution)
+            e_fc['text'] = str(fun)
     return f
+
 #funkcja czyszcząca parametry
-def button_func(e1, e2, e3, e4, e5, e6, e7, l1, l2, l3, l4, l5):
+def button_func(e1, e2, e3, e4, e5, e6, e7, l1, l2, l3, l4):
     def func():
         e1.delete(0, tkinter.END)
         e2.delete(0, tkinter.END)
@@ -168,7 +109,6 @@ def button_func(e1, e2, e3, e4, e5, e6, e7, l1, l2, l3, l4, l5):
         l2['text'] = ''
         l3['text'] = ''
         l4['text'] = ''
-        l5['text'] = ''
     return func
 
 #Pola do wyświetlenia wyników
@@ -181,15 +121,12 @@ e_global_solution = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", bor
 l_fun_celu = tkinter.Label(okno1, text='Wartość funkcji celu:')
 e_fun_celu = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", borderwidth=2)
 
-l_iter = tkinter.Label(okno1, text='Ilosć iteracji:')
-e_iter = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", borderwidth=2)
-
 l_error_info = tkinter.Label(okno1, text='Informacja o błędzie')
 e_error = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", borderwidth=2)
 
-b_clear = tkinter.Button(okno1, text='clear', command=button_func(p_n, p_N_max, p_omega, p_c1, p_c2, p_r1, p_r2, e_start_solution, e_global_solution, e_fun_celu, e_iter, e_error))
+b_clear = tkinter.Button(okno1, text='clear', command=button_func(p_n, p_N_max, p_omega, p_c1, p_c2, p_r1, p_r2, e_start_solution, e_global_solution, e_fun_celu, e_error))
 
-b_gen = tkinter.Button(okno1, text='wynik', command=oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_start_solution,e_global_solution, e_fun_celu, e_iter, e_error))
+b_gen = tkinter.Button(okno1, text='wynik', command=oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_start_solution,e_global_solution, e_fun_celu, e_error))
 
 b_clear.pack()
 ls1b = tkinter.Label(okno1, text='')
@@ -203,8 +140,6 @@ l_global_solution.pack()
 e_global_solution.pack()
 l_fun_celu.pack()
 e_fun_celu.pack()
-l_iter.pack()
-e_iter.pack()
 ls4 = tkinter.Label(okno1, text='')
 ls4.pack()
 l_error_info.pack()

@@ -6,8 +6,7 @@ import numpy as np
 
 
 def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, time_3, profits, total_time_1,
-                   total_time_2,
-                   total_time_3, total_weight):
+                   total_time_2, total_time_3, total_weight, w, c1, c2, r1, r2):
     """
     :param Nmax: maksymalna liczba iteracji
     :param products_num: liczba produktów
@@ -47,12 +46,12 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
     while iter < Nmax:
         prev = global_solution  # zapamietanie poprzedniego rozwiązania w celu zapobiegania utknięciu w minimum
         for i in range(num):
-            r1 = random.random()
-            r2 = random.random()
-
-            w = 0.8  # – współczynnik inercji ruchu cząstki,
-            c1 = 1  # – stała dodatnia, tzw.wskaźnik samooceny,
-            c2 = 1  # – stała dodatnia, wskaźnik społecznościowy (zaufanie położeniu sąsiadów)
+            # r1 = random.random()
+            # r2 = random.random()
+            #
+            # w = 0.8  # – współczynnik inercji ruchu cząstki,
+            # c1 = 1  # – stała dodatnia, tzw.wskaźnik samooceny,
+            # c2 = 1  # – stała dodatnia, wskaźnik społecznościowy (zaufanie położeniu sąsiadów)
 
             # aktualizacja prędkosci cząsteczek
             v[i] = np.around(w * v[i - 1] + c1 * r1 * (p[i - 1] - x[i - 1]) + c2 * r2 * (global_solution - x[i - 1]))
@@ -81,7 +80,8 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
         else:
             counter = 0
 
-        if counter >= 10: # po 10 iteracjach o tym samym wyniku ponownie losuję rozwiązanie
+        if counter >= 10:  # po 10 iteracjach o tym samym wyniku ponownie losuję rozwiązanie
+            # aby nie utknąć w lokalnym minimum
             global_solution = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
                                                       profits, total_time_1, total_time_2, total_time_3, total_weight)
             counter = 0
@@ -93,6 +93,6 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
         iter += 1
 
     print(f"ROZWIĄZANIE KOŃCOWE: \n{global_solution}")
-    print(f'FUNKCJA CELU = {utils.function(global_solution, profits, product_weights, time_1, time_2, time_3, total_time_1, total_time_2, total_time_3, total_weight)}')
+    print(f'FUNKCJA CELU = {obj_f_g}')
     print(f"FUNKCJE CELU W KOLEJNYCH ITERACJACH: \n{costPoints}")
-    return global_solution
+    return start_solution, global_solution, obj_f_g, costPoints, Nmax
