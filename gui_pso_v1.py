@@ -9,9 +9,14 @@ import data_structures
 import random
 import numpy as np
 
+from matplotlib.backends.backend_tkagg import (
+   FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.backend_bases import key_press_handler
+from matplotlib.figure import Figure
+
 okno1 = tkinter.Tk()
 okno1.title('Optymalizacja zysków z produkcji')
-okno1.geometry('480x680')
+okno1.geometry('480x800')
 
 #Pole do wpisania liczby produktów
 l_n = tkinter.Label(okno1, text='Podaj liczbę produktów:')
@@ -93,6 +98,7 @@ def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g,e_fc,e_e):
             e_s['text'] = str(start_solution)
             e_g['text'] = str(global_solution)
             e_fc['text'] = str(fun)
+            chart(Nmax, costPoints, fun)
     return f
 
 #funkcja czyszcząca parametry
@@ -146,50 +152,40 @@ l_error_info.pack()
 e_error.pack()
 
 #=====================WYKRES=====================
-# W funkcji particle_swarm można dodać tablicę (wektor) iteracji i odpowiadającą jej tablicę (wektor) funkcji celu.
 
-#from matplotlib.backends.backend_tkagg import (
-#    FigureCanvasTkAgg, NavigationToolbar2Tk)
-# Implement the default Matplotlib key bindings.
-#from matplotlib.backend_bases import key_press_handler
-#from matplotlib.figure import Figure
+def chart(Nmax, costPoints, fun):
+    okno_wykres = tkinter.Tk()
+    okno_wykres.wm_title("Wykres funkcji celu")
 
-#okno_wykres = tkinter.Tk()
-#okno_wykres.wm_title("Wykres funkcji celu")
+    fig = Figure(figsize=(5, 4), dpi=100)
 
-#fig = Figure(figsize=(5, 4), dpi=100)
+    iter_tab = list(range(1, Nmax+1))
+    f_celu_tab = costPoints
 
-#iter_tab = [1, 2, ..., N] (array)
-#f_celu_tab = [f1, f2, ..., f_N] (array)
+    fig.add_subplot(111).plot(iter_tab, f_celu_tab)
 
-#fig.add_subplot(111).plot(iter_tab, f_celu_tab)
+    canvas = FigureCanvasTkAgg(fig, master=okno_wykres)  # A tk.DrawingArea.
+    canvas.draw()
+    canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
-#canvas = FigureCanvasTkAgg(fig, master=okno_wykres)  # A tk.DrawingArea.
-#canvas.draw()
-#canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+    toolbar = NavigationToolbar2Tk(canvas, okno_wykres)
+    toolbar.update()
+    canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
-#toolbar = NavigationToolbar2Tk(canvas, okno_wykres)
-#toolbar.update()
-#canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+    def on_key_press(event):
+       print("you pressed {}".format(event.key))
+       key_press_handler(event, canvas, toolbar)
 
-#def on_key_press(event):
-#    print("you pressed {}".format(event.key))
-#    key_press_handler(event, canvas, toolbar)
+    canvas.mpl_connect("key_press_event", on_key_press)
 
-#canvas.mpl_connect("key_press_event", on_key_press)
+    def _quit():
+       root.quit()     # stops mainloop
+       root.destroy()  # this is necessary on Windows to prevent
 
-#def _quit():
-#    root.quit()     # stops mainloop
-#    root.destroy()  # this is necessary on Windows to prevent
-                    # Fatal Python Error: PyEval_RestoreThread: NULL tstate
+    button_quit = tkinter.Button(master=okno_wykres, text="Quit", command=_quit)
+    button_quit.pack(side=tkinter.BOTTOM)
 
-
-#button_quit = tkinter.Button(master=okno_wykres, text="Quit", command=_quit)
-#button_quit.pack(side=tkinter.BOTTOM)
-
-#okno_wykres.mainloop()
-# If you put okno_wykres.destroy() here, it will cause an error if the window is
-# closed with the window manager.
+    okno_wykres.mainloop()
 #================================================
 
 okno1.mainloop()
