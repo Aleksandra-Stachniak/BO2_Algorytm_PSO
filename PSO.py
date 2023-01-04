@@ -44,10 +44,10 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
         v.append(1)
 
     iter = 0
-    prev = global_solution
+    counter = 0  # zliczanie powtórzeń rozwiązań
 
-    counter = 0
     while iter < Nmax:
+        prev = global_solution  # zapamietanie poprzedniego rozwiązania w celu zapobiegania utknięciu w minimum
         for i in range(num):
             r1 = random.random()
             r2 = random.random()
@@ -71,7 +71,6 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
             if obj_f_x > obj_f_p:
                 p[i] = x[i]  # aktualizacja najlepszego rozwiązania cząsteczki
                 if obj_f_p > obj_f_g:
-                    prev = global_solution
                     global_solution = p[i]  # aktualizacja najlepszego rozwiązania roju
 
         obj_f_prev = utils.function(prev, profits, product_weights, time_1, time_2, time_3, total_time_1,
@@ -79,13 +78,12 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
         obj_f_g = utils.function(global_solution, profits, product_weights, time_1, time_2, time_3,
                                  total_time_1, total_time_2, total_time_3, total_weight)
 
-        print(obj_f_prev, obj_f_g)
         if obj_f_prev == obj_f_g:
             counter += 1
         else:
             counter = 0
 
-        if counter >= 10:
+        if counter >= 10: # po 10 iteracjach o tym samym wyniku ponownie losuję rozwiązanie
             global_solution = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
                                                       profits, total_time_1, total_time_2, total_time_3, total_weight)
             counter = 0
