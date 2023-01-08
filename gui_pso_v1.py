@@ -62,7 +62,7 @@ p_r2.pack()
 ls1a = tkinter.Label(okno1, text='')
 ls1a.pack()
 
-def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g,e_fc,e_e):
+def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,p_num,e_s,e_g,e_fc,e_e):
     def f():
         number_products = int(p_n.get())
         Nmax = int(p_N_max.get())
@@ -102,7 +102,7 @@ def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_s,e_g,e_fc,e_e):
     return f
 
 #funkcja czyszcząca parametry
-def button_func(e1, e2, e3, e4, e5, e6, e7, l1, l2, l3, l4):
+def button_func(e1, e2, e3, e4, e5, e6, e7, e8, l1, l2, l3, l4):
     def func():
         e1.delete(0, tkinter.END)
         e2.delete(0, tkinter.END)
@@ -111,6 +111,7 @@ def button_func(e1, e2, e3, e4, e5, e6, e7, l1, l2, l3, l4):
         e5.delete(0, tkinter.END)
         e6.delete(0, tkinter.END)
         e7.delete(0, tkinter.END)
+        e8.delete(0, tkinter.END)
         l1['text'] = ''
         l2['text'] = ''
         l3['text'] = ''
@@ -130,9 +131,9 @@ e_fun_celu = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", borderwidt
 l_error_info = tkinter.Label(okno1, text='Informacja o błędzie')
 e_error = tkinter.Label(okno1, bg="#C0CBCB", width=55, anchor="w", borderwidth=2)
 
-b_clear = tkinter.Button(okno1, text='clear', command=button_func(p_n, p_N_max, p_omega, p_c1, p_c2, p_r1, p_r2, e_start_solution, e_global_solution, e_fun_celu, e_error))
+b_clear = tkinter.Button(okno1, text='clear', command=button_func(p_n, p_N_max, p_omega, p_c1, p_c2, p_r1, p_r2,p_num, e_start_solution, e_global_solution, e_fun_celu, e_error))
 
-b_gen = tkinter.Button(okno1, text='wynik', command=oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,e_start_solution,e_global_solution, e_fun_celu, e_error))
+b_gen = tkinter.Button(okno1, text='wynik', command=oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,p_num,e_start_solution,e_global_solution, e_fun_celu, e_error))
 
 b_clear.pack()
 ls1b = tkinter.Label(okno1, text='')
@@ -162,7 +163,10 @@ def chart(Nmax, costPoints, fun):
     iter_tab = list(range(1, Nmax+1))
     f_celu_tab = costPoints
 
-    fig.add_subplot(111).plot(iter_tab, f_celu_tab)
+    axes = fig.add_subplot()
+    axes.plot(iter_tab, f_celu_tab)
+    axes.set_xlabel(xlabel='Iteracje')
+    axes.set_ylabel(ylabel='Wartość funkcji')
 
     canvas = FigureCanvasTkAgg(fig, master=okno_wykres)
     canvas.draw()
