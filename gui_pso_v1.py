@@ -157,6 +157,7 @@ e_error.pack()
 def chart(Nmax, costPoints, fun):
     okno_wykres = tkinter.Tk()
     okno_wykres.wm_title("Wykres funkcji celu")
+    okno_wykres.geometry('650x500')
 
     fig = Figure(figsize=(5, 4), dpi=100)
 
@@ -166,7 +167,7 @@ def chart(Nmax, costPoints, fun):
     axes = fig.add_subplot()
     axes.plot(iter_tab, f_celu_tab)
     axes.set_xlabel(xlabel='Iteracje')
-    axes.set_ylabel(ylabel='Wartość funkcji')
+    axes.set_ylabel(ylabel='Wartość funkcji celu')
 
     canvas = FigureCanvasTkAgg(fig, master=okno_wykres)
     canvas.draw()
