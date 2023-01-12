@@ -3,7 +3,7 @@
 import utils
 import random
 import numpy as np
-
+import time
 
 def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, time_3, profits, total_time_1,
                    total_time_2, total_time_3, total_weight, w, c1, c2, r1, r2):
@@ -82,18 +82,22 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
 
         if counter >= 15:  # po 10 iteracjach o tym samym wyniku ponownie losuję rozwiązanie
             # aby nie utknąć w lokalnym minimum
-            # nowa wartość zostanie przyjęta tylko jeśli będzie większa od dotychczasowej
-
             new_sol = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
-                                                      profits, total_time_1, total_time_2, total_time_3, total_weight)
+                                              profits, total_time_1, total_time_2, total_time_3, total_weight)
             new_obj_f = utils.function(new_sol, profits, product_weights, time_1, time_2, time_3,
-                                 total_time_1, total_time_2, total_time_3, total_weight)
-
+                                       total_time_1, total_time_2, total_time_3, total_weight)
+            timeout = time.time() + 2
             while new_obj_f <= obj_f_g:
+
+                if time.time() >= timeout:
+                    new_sol = global_solution
+                    break
+
                 new_sol = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
                                                   profits, total_time_1, total_time_2, total_time_3, total_weight)
                 new_obj_f = utils.function(new_sol, profits, product_weights, time_1, time_2, time_3,
                                            total_time_1, total_time_2, total_time_3, total_weight)
+                print(new_obj_f, obj_f_g)
 
             global_solution = new_sol
             counter = 0
