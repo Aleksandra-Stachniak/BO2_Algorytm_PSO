@@ -80,10 +80,22 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
         else:
             counter = 0
 
-        if counter >= 10:  # po 10 iteracjach o tym samym wyniku ponownie losuję rozwiązanie
+        if counter >= 15:  # po 10 iteracjach o tym samym wyniku ponownie losuję rozwiązanie
             # aby nie utknąć w lokalnym minimum
-            global_solution = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
+            # nowa wartość zostanie przyjęta tylko jeśli będzie większa od dotychczasowej
+
+            new_sol = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
                                                       profits, total_time_1, total_time_2, total_time_3, total_weight)
+            new_obj_f = utils.function(new_sol, profits, product_weights, time_1, time_2, time_3,
+                                 total_time_1, total_time_2, total_time_3, total_weight)
+
+            while new_obj_f <= obj_f_g:
+                new_sol = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
+                                                  profits, total_time_1, total_time_2, total_time_3, total_weight)
+                new_obj_f = utils.function(new_sol, profits, product_weights, time_1, time_2, time_3,
+                                           total_time_1, total_time_2, total_time_3, total_weight)
+
+            global_solution = new_sol
             counter = 0
 
         obj_f_g = utils.function(global_solution, profits, product_weights, time_1, time_2, time_3,
