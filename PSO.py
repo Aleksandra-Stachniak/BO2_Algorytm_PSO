@@ -80,7 +80,7 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
         else:
             counter = 0
 
-        if counter >= 15:  # po 10 iteracjach o tym samym wyniku ponownie losuję rozwiązanie
+        if counter >= 15:  # po 15 iteracjach o tym samym wyniku ponownie losuję rozwiązanie
             # aby nie utknąć w lokalnym minimum
             new_sol = utils.production_volume(products_num, product_weights, time_1, time_2, time_3,
                                               profits, total_time_1, total_time_2, total_time_3, total_weight)

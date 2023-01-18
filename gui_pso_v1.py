@@ -73,16 +73,9 @@ def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,p_num,e_s,e_g,e_fc,e_e):
         r2 = float(p_r2.get())
         num = int(p_num.get())
 
-        # ========== zmiany =================
-        # pobieranie parametrów:
-
-        product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight = data_structures.parameters(number_products)
-        start_solution, global_solution, fun, costPoints, iter = PSO.particle_swarm(Nmax, number_products, num, product_weights, time_1, time_2, time_3, profits, total_time_1,
-                           total_time_2, total_time_3, total_weight, w, c1, c2, r1, r2)
-
-        # ====================================
         # ograniczenia
-        if type(number_products) != int or type(Nmax) != int or type(w) != float or type(c1) != float or type(c2) != float or type(
+        if type(number_products) != int or type(Nmax) != int or type(w) != float or type(c1) != float or type(
+                c2) != float or type(
                 r1) != float or type(c2) != float:
             e_e['text'] = 'błędne dane'
             e_s['text'] = 'err404 XD'
@@ -95,10 +88,21 @@ def oblicz(p_n,p_N_max,p_omega,p_c1,p_c2,p_r1,p_r2,p_num,e_s,e_g,e_fc,e_e):
             e_g['text'] = 'err404 XD'
             e_fc['text'] = 'err404 XD'
         else:
+
+            product_weights, time_1, time_2, time_3, profits, total_time_1, total_time_2, total_time_3, total_weight = data_structures.parameters(
+                number_products)
+            start_solution, global_solution, fun, costPoints, iter = PSO.particle_swarm(Nmax, number_products, num,
+                                                                                        product_weights, time_1, time_2,
+                                                                                        time_3, profits, total_time_1,
+                                                                                        total_time_2, total_time_3,
+                                                                                        total_weight, w, c1, c2, r1, r2)
             e_s['text'] = str(start_solution)
             e_g['text'] = str(global_solution)
             e_fc['text'] = str(fun)
             chart(Nmax, costPoints, fun)
+
+        # ====================================
+
     return f
 
 #funkcja czyszcząca parametry
