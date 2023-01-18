@@ -97,7 +97,6 @@ def particle_swarm(Nmax, products_num, num, product_weights, time_1, time_2, tim
                                                   profits, total_time_1, total_time_2, total_time_3, total_weight)
                 new_obj_f = utils.function(new_sol, profits, product_weights, time_1, time_2, time_3,
                                            total_time_1, total_time_2, total_time_3, total_weight)
-                print(new_obj_f, obj_f_g)
 
             global_solution = new_sol
             counter = 0
